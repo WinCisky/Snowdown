@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bey7qyxj3awqf"]
+[gd_scene load_steps=5 format=3 uid="uid://bey7qyxj3awqf"]
 
 [ext_resource type="PackedScene" uid="uid://c54y63xmn8pee" path="res://scenes/player.tscn" id="1_nenc7"]
 [ext_resource type="TileSet" uid="uid://ceogttx6r48fs" path="res://assets/terrain.tres" id="3_bafvq"]
 [ext_resource type="Script" path="res://scenes/terrain_layer.gd" id="4_1f7kh"]
+[ext_resource type="Script" path="res://scripts/map_manager.gd" id="4_e6n8x"]
 
 [node name="Game" type="Node2D"]
 
@@ -10,8 +11,16 @@
 tile_set = ExtResource("3_bafvq")
 script = ExtResource("4_1f7kh")
 
+[node name="TileMapLayer2" type="TileMapLayer" parent="."]
+tile_set = ExtResource("3_bafvq")
+script = ExtResource("4_1f7kh")
+
 [node name="Player" parent="." instance=ExtResource("1_nenc7")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
+zoom = Vector2(1.5, 1.5)
+
+[node name="MapManager" type="Node" parent="." node_paths=PackedStringArray("player", "tilesets")]
+script = ExtResource("4_e6n8x")
+player = NodePath("../Player")
+tilesets = [NodePath("../TileMapLayer"), NodePath("../TileMapLayer2")]

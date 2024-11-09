@@ -1,10 +1,12 @@
+class_name MapTileset
+
 extends TileMapLayer
 
 const TRESHOLD = -0.7
 const SCALE_MULTIPLIER = 2
-const SIZE = 500
+const SIZE = 200
 const HALF_SIZE = SIZE / 2
-var pos = Vector2(0, 0)
+const ROWS_PER_FRAME = 2
 var noise := FastNoiseLite.new()
 
 # 8-bit Directional Values
@@ -77,17 +79,23 @@ func get_tile_type(x, y):
 
 	return my_dict[sum]
 
-func create_noise(x_pos, y_pos, width, height):
-	var bitmap = []
-	for x in range(width):
-		var bitmap_row = []
-		for y in range(height):
-			var cell_type = get_tile_type(x, y)
+func update_map(x_pos, y_pos, width, height):
+	clear()
+	for y in range(height):
+		for x in range(width):
+			var tile_pos = Vector2i((x - HALF_SIZE) + x_pos, (y - HALF_SIZE) + y_pos)
+			var cell_type = get_tile_type(tile_pos.x, tile_pos.y)
 			set_cell(
-				Vector2(x - HALF_SIZE, y - HALF_SIZE),
+				tile_pos,
 				1,
 				cell_type
 			)
+		if y % ROWS_PER_FRAME == 0:
+			await get_tree().process_frame 
+
+func create_map(seed, pos):
+	noise.seed = seed
+	update_map(pos.x, pos.y, SIZE, SIZE)
 
 func _ready() -> void:
 	# https://auburn.github.io/FastNoiseLite/
@@ -97,9 +105,3 @@ func _ready() -> void:
 	noise.cellular_distance_function = FastNoiseLite.DISTANCE_EUCLIDEAN_SQUARED
 	noise.cellular_return_type = FastNoiseLite.RETURN_DISTANCE2_SUB
 	noise.cellular_jitter = 1.13
-	create_noise(-HALF_SIZE + pos.x, -HALF_SIZE + pos.y, SIZE, SIZE)
-
-func _process(delta: float) -> void:
-	pos += Vector2(0, delta * 5)
-	#create_noise(-HALF_SIZE + pos.x, -HALF_SIZE + pos.y, SIZE, SIZE)
-	position -= Vector2(0, delta * 100)
