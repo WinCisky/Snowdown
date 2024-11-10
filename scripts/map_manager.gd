@@ -14,7 +14,7 @@ func _ready() -> void:
 	var rng = RandomNumberGenerator.new()
 	seed = rng.randi_range(0, 1000)
 	# creates the map
-	tilesets[used_tileset_index].create_map(seed, Vector2(0, 0))
+	tilesets[used_tileset_index].create_map(seed, Vector2(0, 0), false)
 
 func _physics_process(delta: float) -> void:
 	var player_pos = player.position

@@ -79,7 +79,7 @@ func get_tile_type(x, y):
 
 	return my_dict[sum]
 
-func update_map(x_pos, y_pos, width, height):
+func update_map(x_pos, y_pos, width, height, progressive = true):
 	clear()
 	for y in range(height):
 		for x in range(width):
@@ -90,12 +90,12 @@ func update_map(x_pos, y_pos, width, height):
 				1,
 				cell_type
 			)
-		if y % ROWS_PER_FRAME == 0:
+		if progressive and y % ROWS_PER_FRAME == 0:
 			await get_tree().process_frame 
 
-func create_map(seed, pos):
+func create_map(seed, pos, progressive = true):
 	noise.seed = seed
-	update_map(pos.x, pos.y, SIZE, SIZE)
+	update_map(pos.x, pos.y, SIZE, SIZE, progressive)
 
 func _ready() -> void:
 	# https://auburn.github.io/FastNoiseLite/

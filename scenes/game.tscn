@@ -18,6 +18,7 @@ script = ExtResource("4_1f7kh")
 [node name="Player" parent="." instance=ExtResource("1_nenc7")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, 100)
 zoom = Vector2(1.5, 1.5)
 
 [node name="MapManager" type="Node" parent="." node_paths=PackedStringArray("player", "tilesets")]
