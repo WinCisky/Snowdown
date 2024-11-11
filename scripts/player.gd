@@ -1,41 +1,37 @@
 extends CharacterBody2D
 
 
-const MAX_SPEED = 150.0
-const MOVE_SPEED = 50.0
-const SLOWDOWN_MULTIPLIER = 2
-const VELOCITY_STEERING_MULTIPLIER = 2
+var ACCELERATION = 100.0
+var DECELERATION = 50.0
+var MAX_SPEED = 500.0
+var MIN_SPEED = 50.0
+var ROTATION_SPEED = 1.0
 
-# you either go fast or you steer
-var velocity_steering_coefficient = Vector2.ZERO
+var direction = Vector2.DOWN
+var speed = MIN_SPEED
 
+@onready var animated_sprite = $AnimatedSprite2D
 
 func _physics_process(delta: float) -> void:
-	var direction := Input.get_axis("ui_left", "ui_right")
+	var input := Input.get_axis("ui_left", "ui_right")
 	
-	if direction:
-		if (direction > 0 and velocity.x <= 0) or (direction < 0 and velocity.x >= 0):
-			velocity_steering_coefficient = velocity_steering_coefficient.lerp(
-				Vector2.RIGHT, delta * VELOCITY_STEERING_MULTIPLIER
-			)
-		
-		# accelerate linearly towards the pressed direction
-		velocity.x = velocity.lerp(
-			Vector2(direction * MAX_SPEED, 0), 
-			delta * MOVE_SPEED * velocity_steering_coefficient.x
-		).x
+	# Check if input is close to zero (no direction change)
+	if abs(input) < 0.01:
+		# Accelerate if going in the same direction
+		speed += ACCELERATION * delta
 	else:
-		# accelerate and decrease steering
-		velocity_steering_coefficient = velocity_steering_coefficient.lerp(
-			Vector2.DOWN, delta * VELOCITY_STEERING_MULTIPLIER
-		)
-		
-		# decelerate towards going straight down
-		velocity.x = velocity.lerp(
-			Vector2.ZERO,
-			delta * SLOWDOWN_MULTIPLIER * velocity_steering_coefficient.x
-		).x
-		
-	velocity.y = delta * 15000 * velocity_steering_coefficient.y
+		# Update direction based on input
+		direction = direction.rotated(input * ROTATION_SPEED * delta * -1).normalized()
+
+		# Decelerate if direction changes
+		speed -= ACCELERATION * delta
+
+	# Clamp the speed to stay within min and max limits
+	speed = clamp(speed, MIN_SPEED, MAX_SPEED)
+
+	# Move the player in the current direction with the calculated speed
+	velocity = direction * speed
 
 	move_and_slide()
+	
+	animated_sprite.rotation = direction.angle() - (PI / 2)
