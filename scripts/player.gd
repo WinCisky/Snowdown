@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 
-var ACCELERATION = 100.0
-var DECELERATION = 50.0
+var ACCELERATION = 90.0
+var DECELERATION = 30.0
 var MAX_SPEED = 500.0
 var MIN_SPEED = 50.0
 var ROTATION_SPEED = 1.0

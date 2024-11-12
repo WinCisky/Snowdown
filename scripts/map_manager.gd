@@ -20,6 +20,6 @@ func _physics_process(delta: float) -> void:
 	var player_pos = player.position
 	if (player.position.y / TILE_SIZE) >= latest_map_y:
 		# place new map portion
-		latest_map_y += 200
+		latest_map_y += 400
 		used_tileset_index = (used_tileset_index + 1) % len(tilesets)
 		tilesets[used_tileset_index].create_map(seed, Vector2(roundi(player.position.x / TILE_SIZE), latest_map_y))

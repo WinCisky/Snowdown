@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bor36d6gk1mq7"
-path="res://.godot/imported/tilemap8bit_transparent.png-3a434b0d2962c915a77380e0b8b1110f.ctex"
+uid="uid://b5eya4wu0xxw"
+path="res://.godot/imported/rotated_trail.png-201b71d13e2a281c53bb020e7055a78d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilemap8bit_transparent.png"
-dest_files=["res://.godot/imported/tilemap8bit_transparent.png-3a434b0d2962c915a77380e0b8b1110f.ctex"]
+source_file="res://assets/rotated_trail.png"
+dest_files=["res://.godot/imported/rotated_trail.png-201b71d13e2a281c53bb020e7055a78d.ctex"]
 
 [params]
 
