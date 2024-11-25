@@ -78,7 +78,7 @@ func update_terrain(index: int, x_pos: int, y_pos: int, width: int, height: int,
 			await get_tree().process_frame 
 
 func create_map(index, pos, progressive = true):
-	update_terrain(pos.x, pos.y, SIZE, SIZE, progressive)
+	update_terrain(index, pos.x, pos.y, SIZE, SIZE, progressive)
 	# TODO: create terrain overlay (obstacles)
 
 func _ready() -> void:
@@ -92,9 +92,9 @@ func _ready() -> void:
 	# get random seed
 	var rng = RandomNumberGenerator.new()
 	seed = rng.randi_range(0, 1000)
+	noise.seed = seed
 	# creates the map
 	create_map(used_tileset_index, Vector2(0, 0), false)
-	# tilesets[used_tileset_index].create_map(seed, Vector2(0, 0), false)
 
 func _physics_process(delta: float) -> void:
 	var player_pos = player.position
@@ -103,4 +103,3 @@ func _physics_process(delta: float) -> void:
 		latest_map_y += 400
 		used_tileset_index = (used_tileset_index + 1) % len(tilesets)
 		create_map(used_tileset_index, Vector2(roundi(player.position.x / TILE_SIZE), latest_map_y))
-		# tilesets[used_tileset_index].create_map(seed, Vector2(roundi(player.position.x / TILE_SIZE), latest_map_y))
